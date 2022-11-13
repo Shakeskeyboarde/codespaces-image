@@ -1,5 +1,4 @@
 {
-	"name": "Arch Node.js v18",
 	"image": "ghcr.io/shakeskeyboarde/codespaces-image:main",
 	"postCreateCommand": "pacman-key --init && pacman-key --populate archlinux",
 	"postStartCommand": "npm i",

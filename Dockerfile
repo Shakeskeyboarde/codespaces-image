@@ -36,5 +36,5 @@ RUN mkdir -p /root/bin
 RUN echo '#!/usr/bin/env bash' > /root/bin/update-devcontainer
 RUN echo 'cd workspaces/*' >> /root/bin/update-devcontainer
 RUN echo 'mkdir -p .devcontainer' >> /root/bin/update-devcontainer
-RUN echo 'curl https://raw.githubusercontent.com/Shakeskeyboarde/codespaces-image/main/.devcontainer/devcontainer.json > .devcontainer/devcontainer.json' >> /root/bin/update-devcontainer
+RUN echo 'curl "https://raw.githubusercontent.com/Shakeskeyboarde/codespaces-image/main/.devcontainer/devcontainer.json?$(date +%s)" > .devcontainer/devcontainer.json' >> /root/bin/update-devcontainer
 RUN chmod +x /root/bin/update-devcontainer

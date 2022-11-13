@@ -15,6 +15,7 @@ RUN echo 'promptinit' >> /root/.zshrc
 RUN echo 'export PS1="%B%F{cyan}%(4~|...|)%3~%F{white} %# %b%f%k"' >> /root/.zshrc
 RUN echo 'alias ls="ls -al --color=auto"' >> /root/.zshrc
 RUN echo 'alias mknew="npx mknew -s https://github.com/Shakeskeyboarde/templates.git"' >> /root/.zshrc
+RUN echo 'export PATH=/root/bin:$PATH' >> /root/.zshrc
 ENTRYPOINT [ "zsh" ]
 
 # Install NodeJS
@@ -29,3 +30,11 @@ RUN . $NVM_DIR/nvm.sh \
 # Configure GIT
 RUN git config --global core.editor "vim"
 RUN git config --global pull.rebase false
+
+# Add devcontainer.json update script
+RUN mkdir -p /root/bin
+RUN echo '#!/usr/bin/env bash' > /root/bin/update-devcontainer
+RUN echo 'cd workspaces/*' >> /root/bin/update-devcontainer
+RUN echo 'mkdir -p .devcontainer' >> /root/bin/update-devcontainer
+RUN echo 'curl https://raw.githubusercontent.com/Shakeskeyboarde/codespaces-image/main/.devcontainer/devcontainer.json > .devcontainer/devcontainer.json' >> /root/bin/update-devcontainer
+RUN chmod +x /root/bin/update-devcontainer

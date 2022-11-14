@@ -7,7 +7,7 @@ RUN pacman -Sy --noconfirm coreutils base-devel vim openssh
 
 # Copy files
 RUN mkdir -p /root/bin
-COPY files/install=* /tmp
+COPY files/install-* /tmp
 COPY files/update-devcontainer /root/bin
 COPY files/.zshrc /root/.zshrc
 

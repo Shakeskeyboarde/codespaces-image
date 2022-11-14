@@ -1,5 +1,5 @@
 {
-  "build": { "dockerfile": "../Dockerfile" },
+  "build": { "dockerfile": "../../Dockerfile" },
   "postCreateCommand": "pacman-key --init && pacman-key --populate archlinux",
   "postStartCommand": "npm i",
   "customizations": {

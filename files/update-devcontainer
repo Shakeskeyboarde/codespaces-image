@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+cd workspaces/*
+mkdir -p .devcontainer
+curl "https://raw.githubusercontent.com/Shakeskeyboarde/codespaces-image/main/.devcontainer/devcontainer.json?$(date +%s)" > .devcontainer/devcontainer.json

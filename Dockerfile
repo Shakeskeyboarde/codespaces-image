@@ -3,38 +3,20 @@ FROM archlinux:latest
 # Update and install packages
 RUN pacman-key --init && pacman-key --populate archlinux
 RUN pacman -Syu --noconfirm
-RUN pacman -Sy --noconfirm coreutils base-devel zsh vim git openssh podman podman-docker
+RUN pacman -Sy --noconfirm coreutils base-devel vim openssh
+
+# Copy files
+RUN mkdir -p /root/bin
+COPY files/install=* /tmp
+COPY files/update-devcontainer /root/bin
+COPY files/.zshrc /root/.zshrc
+
+# Run install scripts
+RUN /tmp/install-zsh
+RUN /tmp/install-node
+RUN /tmp/install-git
+
+# Cleanup non-sharable pacman keys
 RUN rm -rf /etc/pacman.d/gnupg
 
-# Change the shell to ZSH
-RUN echo $(which zsh) >> /etc/shells
-RUN chsh -s $(which zsh)
-RUN echo 'autoload -Uz compinit promptinit' >> /root/.zshrc
-RUN echo 'compinit' >> /root/.zshrc
-RUN echo 'promptinit' >> /root/.zshrc
-RUN echo 'export PS1="%B%F{cyan}%(4~|...|)%3~%F{white} %# %b%f%k"' >> /root/.zshrc
-RUN echo 'alias ls="ls -al --color=auto"' >> /root/.zshrc
-RUN echo 'alias mknew="npx mknew -s https://github.com/Shakeskeyboarde/templates.git"' >> /root/.zshrc
-RUN echo 'export PATH=/root/bin:$PATH' >> /root/.zshrc
 ENTRYPOINT [ "zsh" ]
-
-# Install NodeJS
-ENV NVM_DIR /root/.nvm
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
-RUN . $NVM_DIR/nvm.sh \
-    && nvm install 18 \
-    && nvm alias default node \
-    && nvm use node \
-    && npm i -g npm@latest
-
-# Configure GIT
-RUN git config --global core.editor "vim"
-RUN git config --global pull.rebase false
-
-# Add devcontainer.json update script
-RUN mkdir -p /root/bin
-RUN echo '#!/usr/bin/env bash' > /root/bin/update-devcontainer
-RUN echo 'cd workspaces/*' >> /root/bin/update-devcontainer
-RUN echo 'mkdir -p .devcontainer' >> /root/bin/update-devcontainer
-RUN echo 'curl "https://raw.githubusercontent.com/Shakeskeyboarde/codespaces-image/main/.devcontainer/devcontainer.json?$(date +%s)" > .devcontainer/devcontainer.json' >> /root/bin/update-devcontainer
-RUN chmod +x /root/bin/update-devcontainer

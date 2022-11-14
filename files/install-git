@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+pacman -Sy --noconfirm git
+git config --global core.editor vim
+git config --global pull.rebase false

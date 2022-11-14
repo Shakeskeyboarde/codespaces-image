@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+pacman -Sy --noconfirm zsh
+echo $(which zsh) >> /etc/shells
+chsh -s $(which zsh)
